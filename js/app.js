@@ -23,15 +23,11 @@ var Enemy = function(x, y) {
 };
 
 Enemy.prototype.update = function(dt) {
-    (this.x += this.speed + (level * .4)) * dt;
+    (this.x += this.speed + (level * .3)) * dt;
     if (this.x > 505) {
         this.x = -110;
     }
 };
-
-Enemy.prototype.increaseSpeed = function(level) {
-
-}
 
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -49,7 +45,7 @@ Player.prototype.update = function(dt) {
     this.y * dt;
     playerBounds();
     score();
-    //playerLife();
+    playerLife();
 }
 
 function playerBounds() {
@@ -87,10 +83,9 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-var playerLives = 3;
-var playerHearts = 'images/Heart.png';
+var playerLives = ['&#128154;', '&#128154;', '&#128154;'];
 var lifeEl = document.getElementById('life');
-lifeEl.textContent = 'Lives: ' + playerLives;
+lifeEl.textContent = 'Lives ' + playerLives;
 
 var playerScore = 0;
 var scoreEl = document.getElementById('score');
@@ -104,13 +99,12 @@ function checkCollisions() {
         {
                 player.x = 200;
                 player.y = 415;
-                if (playerScore >= 100) {
-                    playerScore -= 100;
+                if (playerScore >= 50) {
+                    playerScore -= 50;
                     scoreEl.textContent = 'Score: ' + playerScore;
                 }
-                if (playerLives >= 1) {
-                    playerLives--;
-                    lifeEl.textContent = 'Lives: ' + playerLives;
+                if (playerLives.length > 0) {
+                    playerLives.splice(-1, 1);
                 }
                 //reset(); //create reset function
         }
@@ -129,10 +123,8 @@ function score() {
 }
 
 function playerLife() {
-    for (var i = 0; i < playerLives.length; i++) {
-        playerLives[i] = playerHearts;
-        var lifeEl = document.getElementById('life');
-        lifeEl.write = 'Lives: ' + playerHearts;
+    for (var i = 1; i <= 3; i++) {
+        lifeEl.innerHTML = 'Lives: ' + playerLives;
     }
 }
 
