@@ -1,3 +1,19 @@
+/* TODO
+-implement gems that give points and time based bonuses
+-create a gameover function
+    -resets player location
+    -resets enemy location and speed
+    -resets score
+    -resets lives
+    -takes back to splash screen and character select?
+-create a second level area?
+-create a splash screen with character select
+-modify lives and score CSS
+-implement heart powerup section?
+-turn number of lives into displayable hearts
+*/
+var level = 1;
+
 var Enemy = function(x, y) {
     this.x = x;
     this.y = y;
@@ -6,11 +22,15 @@ var Enemy = function(x, y) {
 };
 
 Enemy.prototype.update = function(dt) {
-    (this.x += this.speed) * dt;
+    (this.x += this.speed + (level * .5)) * dt;
     if (this.x > 505) {
         this.x = -110;
     }
 };
+
+Enemy.prototype.increaseSpeed = function(level) {
+
+}
 
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -73,7 +93,6 @@ lifeEl.textContent = 'Lives: ' + playerLives;
 
 var playerScore = 0;
 var scoreEl = document.getElementById('score');
-scoreEl.textContent = 'Score: ' + playerScore;
 
 function checkCollisions() {
     for (var i = 0; i < allEnemies.length; i++) {
@@ -86,7 +105,6 @@ function checkCollisions() {
                 player.y = 415;
                 if (playerScore >= 100) {
                     playerScore -= 100;
-                    var scoreEl = document.getElementById('score');
                     scoreEl.textContent = 'Score: ' + playerScore;
                 }
                 if (playerLives >= 1) {
@@ -103,31 +121,37 @@ function score() {
         player.x = 200;
         player.y = 415;
         playerScore += 100;
-        var scoreEl = document.getElementById('score');
         scoreEl.textContent = 'Score: ' + playerScore;
+        level++;
     }
 }
 
-/*function playerLife() {
-    for (var i = 0; i < playerLives; i++) {
+function playerLife() {
+    for (var i = 0; i < playerLives.length; i++) {
         playerLives[i] = playerHearts;
         var lifeEl = document.getElementById('life');
         lifeEl.write = 'Lives: ' + playerHearts;
     }
-}*/
+}
 
 function gameOver() {
     //if playerLives = 0 ...
 }
 
+//Code from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+//creates a true random number between minimum and maximum
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
 var player = new Player();
 var allEnemies = [
-    new Enemy(-110, 66),
-    new Enemy(-310, 66),
+    new Enemy(-140, 66),
+    new Enemy(-340, 66),
     new Enemy(-110, 140),
     new Enemy(-310, 140),
-    new Enemy(-110, 230),
-    new Enemy(-310, 230)
+    new Enemy(-70, 230),
+    new Enemy(-270, 230)
     ];
 
 document.addEventListener('keyup', function(e) {
