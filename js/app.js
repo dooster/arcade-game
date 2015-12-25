@@ -13,6 +13,7 @@
 -turn number of lives into displayable hearts
 */
 var level = 1;
+var levelEl = document.getElementById('level');
 
 var Enemy = function(x, y) {
     this.x = x;
@@ -22,7 +23,7 @@ var Enemy = function(x, y) {
 };
 
 Enemy.prototype.update = function(dt) {
-    (this.x += this.speed + (level * .5)) * dt;
+    (this.x += this.speed + (level * .4)) * dt;
     if (this.x > 505) {
         this.x = -110;
     }
@@ -123,6 +124,7 @@ function score() {
         playerScore += 100;
         scoreEl.textContent = 'Score: ' + playerScore;
         level++;
+        levelEl.textContent = 'Level: ' + level;
     }
 }
 
