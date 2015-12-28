@@ -10,7 +10,7 @@
 -create a splash screen with character select
 -modify lives and score CSS
 -implement heart powerup section?
--turn number of lives into displayable hearts
+-collect enough gems to enter additional underwater level
 */
 var level = 1;
 var levelEl = document.getElementById('level');
@@ -33,10 +33,48 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+var Heart = function () {
+    this.x = getRandomInt(0, 4) * 101;
+    this.y = getRandomInt(1, 4) * 83;
+    this.sprite = 'images/Heart.png';
+}
+
+Heart.prototype.location = function () {
+    this.x = getRandomInt(0, 4) * 101;
+    this.y = getRandomInt(1, 4) * 83;
+}
+
+Heart.prototype.create = function () {
+    heart.location();
+}
+
+Heart.prototype.disappear = function () {
+    heart.x = -100;
+    setTimeout(heart.create, 11500);
+}
+
+Heart.prototype.collision = function () {
+    if (player.x <= heart.x + 70
+        && player.x + 70 >= heart.x
+        && player.y <= heart.y + 50
+        && player.y + 50 >= heart.y)
+    {
+        playerLives.push('&#128154;');
+        heart.disappear();
+    }
+}
+
+Heart.prototype.update = function (dt) {
+    heart.collision();
+}
+
+Heart.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
 var Player = function () {
     this.x = 200;
-    this.y = 415;
-    this.speed = 100;
+    this.y = 400;
     this.sprite = 'images/char-cat-girl.png';
 }
 
@@ -64,17 +102,17 @@ function playerBounds() {
     }
 }
 
-Player.prototype.handleInput = function(direction) {
-    if (direction == 'left') {
+Player.prototype.handleInput = function(key) {
+    if (key == 'left') {
         this.x -= 101;
     }
-    if (direction == 'up') {
+    if (key == 'up') {
         this.y -= 83;
     }
-    if (direction == 'right') {
+    if (key == 'right') {
         this.x += 101;
     }
-    if (direction == 'down') {
+    if (key == 'down') {
         this.y += 83;
     }
 }
@@ -84,13 +122,11 @@ Player.prototype.render = function() {
 }
 
 var playerLives = ['&#128154;', '&#128154;', '&#128154;'];
-var lifeEl = document.getElementById('life');
-lifeEl.textContent = 'Lives ' + playerLives;
 
 var playerScore = 0;
 var scoreEl = document.getElementById('score');
 
-function checkCollisions() {
+function checkEnemyCollisions() {
     for (var i = 0; i < allEnemies.length; i++) {
         if (player.x <= allEnemies[i].x + 70
             && player.x + 70 >= allEnemies[i].x
@@ -99,12 +135,10 @@ function checkCollisions() {
         {
                 player.x = 200;
                 player.y = 415;
+                playerLives.splice(-1, 1);
                 if (playerScore >= 50) {
                     playerScore -= 50;
                     scoreEl.textContent = 'Score: ' + playerScore;
-                }
-                if (playerLives.length > 0) {
-                    playerLives.splice(-1, 1);
                 }
                 //reset(); //create reset function
         }
@@ -114,7 +148,7 @@ function checkCollisions() {
 function score() {
     if (player.y < 60) {
         player.x = 200;
-        player.y = 415;
+        player.y = 400;
         playerScore += 100;
         scoreEl.textContent = 'Score: ' + playerScore;
         level++;
@@ -124,13 +158,16 @@ function score() {
 
 function playerLife() {
     for (var i = 1; i <= 3; i++) {
-        lifeEl.innerHTML = 'Lives: ' + playerLives;
+        var lifeEl = document.getElementById('life');
+        lifeEl.innerHTML = 'Lives: ' + playerLives.join("");
     }
 }
 
-function gameOver() {
-    //if playerLives = 0 ...
-}
+/*function gameOver() {
+    if (playerLives == false) {
+
+    }
+}*/
 
 //Code from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 //creates a true random number between minimum and maximum
@@ -138,6 +175,7 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
+var heart = new Heart();
 var player = new Player();
 var allEnemies = [
     new Enemy(-140, 66),
