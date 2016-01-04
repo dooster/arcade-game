@@ -20,7 +20,7 @@ var levelEl = document.getElementById('level');
 
 //a global variable of the player's lives, starting at three
 //the lives are displayed in the browser as unicode hearts
-var playerLives = ['&#128154;', '&#128154;', '&#128154;'];
+var playerLives = ['&#128156;', '&#128156;', '&#128156;'];
 
 //a global variable displaying the player's score, starting at 0
 var playerScore = 0;
@@ -55,7 +55,7 @@ Enemy.prototype.render = function() {
 var Heart = function () {
     this.x = getRandomInt(0, 4) * 101;
     this.y = getRandomInt(1, 4) * 83;
-    this.sprite = 'images/Heart.png';
+    this.sprite = 'images/heart-purple-small.png';
 }
 
 //creates a location function for the heart with random
@@ -89,7 +89,7 @@ Heart.prototype.collision = function () {
         && player.y <= heart.y + 55
         && player.y + 90 >= heart.y)
     {
-        playerLives.push('&#128154;');
+        playerLives.push('&#128156;');
         heart.disappear();
         player.speed += 2;
     }
@@ -112,7 +112,7 @@ var Gem = function () {
     //this.speed = 4; //if decide to make gems move
     this.sprite = 'images/gem-blue.png';
     this.spawnTime = 7000;
-    this.count = 0;
+    this.count = [];
 }
 
 //a funcion that randomizes the gem's location
@@ -152,7 +152,7 @@ Gem.prototype.collision = function () {
         scoreEl.textContent = 'Score: ' + playerScore;
         gem.disappear();
         gem.spawnTime += 250;
-        gem.count++;
+        gem.count.push('&#128142;');
         player.speed -= 2;
     }
     if (heart.x <= gem.x + 30
@@ -248,8 +248,8 @@ function checkEnemyCollisions() {
                     playerScore -= 50;
                     scoreEl.textContent = 'Score: ' + playerScore;
                 }
-                if (gem.count >=1) {
-                    gem.count--;
+                if (gem.count.length >=1) {
+                    gem.count.splice(-1, 1);
                     player.speed += 2;
                 }
                 //reset(); //create reset function
@@ -271,19 +271,29 @@ function score() {
         levelEl.textContent = 'Level: ' + level;
     }
 }
-
+//this function writes the number of new lives to the browser
+//as a string, from the playerLives array
 function playerLife() {
     var lifeEl = document.getElementById('life');
     lifeEl.innerHTML = 'Lives: ' + playerLives.join("");
 }
 
-//The
+function playerGem() {
+    var gemEl = document.getElementById('gem');
+    gemEl.innerHTML = 'Gems: ' + gem.count.join("");
+}
+
+//The player.update function keeps track of all the functions related
+//to the player. It modifies the player's location,
+//and calls the playerBounds, score, and playerLife functions
 Player.prototype.update = function(dt) {
     this.x * dt;
     this.y * dt;
     playerBounds();
     score();
     playerLife();
+    playerGem();
+    console.log(gem.count);
 }
 
 /*function gameOver() {
