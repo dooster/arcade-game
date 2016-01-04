@@ -273,10 +273,8 @@ function score() {
 }
 
 function playerLife() {
-    for (var i = 1; i <= 3; i++) {
-        var lifeEl = document.getElementById('life');
-        lifeEl.innerHTML = 'Lives: ' + playerLives.join("");
-    }
+    var lifeEl = document.getElementById('life');
+    lifeEl.innerHTML = 'Lives: ' + playerLives.join("");
 }
 
 //The
