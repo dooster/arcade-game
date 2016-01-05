@@ -351,7 +351,3 @@ document.addEventListener('keydown', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
-
-function htmlTweaker () {
-
-}
