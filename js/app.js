@@ -8,7 +8,6 @@
     -takes back to splash screen and character select?
 -create a second level area?
 -create a splash screen with character select
--modify lives and score CSS
 -collect enough gems to enter additional underwater level
 */
 
@@ -276,9 +275,13 @@ function score() {
 }
 //this function writes the number of new lives to the browser
 //as a string, from the playerLives array
+//if the playerLives function is empty, it calls the gameOver function
 function playerLife() {
     var lifeEl = document.getElementById('life');
     lifeEl.innerHTML = 'Lives: ' + playerLives.join("");
+    if (playerLives == false) {
+        gameOver();
+    }
 }
 
 //this function writes the number of gems to the browser
@@ -300,11 +303,25 @@ Player.prototype.update = function(dt) {
     playerGem();
 }
 
-/*function gameOver() {
-    if (playerLives == false) {
-
-    }
-}*/
+//a simple function called when the player runs out of lives
+//that resets all aspects of the game
+function gameOver() {
+    allEnemies = [
+    new Enemy(-140, 66),
+    new Enemy(-340, 66),
+    new Enemy(-110, 140),
+    new Enemy(-310, 140),
+    new Enemy(-70, 230),
+    new Enemy(-270, 230)
+    ];
+    level = 1;
+    levelEl.textContent = 'Level: ' + level;
+    gem.count = [];
+    playerLives = ['&#128156;', '&#128156;', '&#128156;'];
+    player.speed = 24;
+    playerScore = 0;
+    scoreEl.textContent = 'Score: ' + playerScore;
+}
 
 //Code from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 //creates a true random number between minimum and maximum
