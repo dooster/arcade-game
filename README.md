@@ -1,6 +1,18 @@
-frontend-nanodegree-arcade-game
-===============================
+#*The Adventures of Empress Cat Lady*
 
-Students should use this [rubric](https://www.udacity.com/course/viewer/#!/c-nd001/l-2696458597/m-2687128535) for self-checking their submission.
+##Intro
+*The Adventures of Empress Cat Lady* is a simple Frogger style game with some basic twists. Don't become too greedy chasing gems, or your character will become as slow as molasses.
 
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+##How To Run
+The game can be run in your browser. Download the arcade-game file from github. Once on your machine, open 'index.html' with your favorite web browser to play the game locally. 
+
+##How To Play
+In game, you control Empress Cat Lady with your arrow keys. You can press the up, down, left, and right arrows to move the player a small distance. Or, for a long continuous movement, you can hold down a key. 
+
+Beware that some elements in the game will affect your speed. Collectible hearts will increase your vitality, allowing your character to run faster. 
+
+However, gems, which increase your score, weigh your player down and decrease the player's speed. Each time a bug collides with you, you will lose both a heart and a gem.
+
+Every time your player reaches the top of the board, the enemy's speed will increase in relation to the level number. 
+
+*Good luck*
