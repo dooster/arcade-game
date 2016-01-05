@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link href='https://fonts.googleapis.com/css?family=Raleway:500' rel='stylesheet' type='text/css'>
     <meta charset="UTF-8">
     <title>Effective JavaScript: Frogger</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class = 'gameInfo'>
-        <div id='score'>Score: 0</div>
-        <div id='level'>Level: 1</div>
-        <div id='life'>Lives: </div>
-        <div id='gem'>Gems: 0</div>
+    <h2>The Adventures of Empress Cat Lady</h2>
+    <div id='row'>
+        <div class='counters' id='gameState'>
+            <div id='score'>Score: 0</div>
+            <div id='life'>Lives: </div>
+        </div>
+        <div class='counters' id='collectibles'>
+            <div id='level'>Level: 1</div>
+            <div id='gem'>Gems: </div>
+        </div>
     </div>
     <div id = 'game'>
         <script src="js/resources.js"></script>

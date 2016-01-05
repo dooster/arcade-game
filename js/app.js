@@ -10,7 +10,6 @@
 -create a splash screen with character select
 -modify lives and score CSS
 -collect enough gems to enter additional underwater level
--show number of gems
 */
 
 //create global variable level which is used to determine enemy speed
@@ -80,14 +79,14 @@ Heart.prototype.disappear = function () {
 
 //Hearts make the player hearty and increase
 //total number of lives and player speed upon contact
-//contact pushes an extra unicode heart ('&#128154;')
-//into the player live's array, calls the disappear function
-//and increases player speed
 Heart.prototype.collision = function () {
     if (player.x <= heart.x + 65
         && player.x + 65 >= heart.x
         && player.y <= heart.y + 55
         && player.y + 90 >= heart.y)
+    //contact pushes an extra unicode heart ('&#128154;')
+    //into the player live's array, calls the disappear function
+    //and increases player speed
     {
         playerLives.push('&#128156;');
         heart.disappear();
@@ -134,19 +133,17 @@ Gem.prototype.disappear = function () {
 }
 
 //gems are valuable but extremely big and heavy
-//on contact, each gem:
-//increases a player's score, which is written onto the browser
-//calls the gem's disappear function
-//increases the spawn time by a quarter second, making the gems rarer
-//increases the player's gem count by 1
-//and decreases the player's speed by 2 due to their weight.
-//if a gem and a heart appear in the same location, the gem will
-//immediately move locations
 Gem.prototype.collision = function () {
     if (player.x <= gem.x + 55
         && player.x + 70 >= gem.x
         && player.y <= gem.y + 45
         && player.y + 90 >= gem.y)
+    //on contact, each gem:
+    //increases a player's score, which is written onto the browser
+    //calls the gem's disappear function
+    //increases the spawn time by a quarter second, making the gems rarer
+    //increases the player's gem count by 1
+    //and decreases the player's speed by 2 due to their weight.
     {
         playerScore += 50;
         scoreEl.textContent = 'Score: ' + playerScore;
@@ -154,23 +151,29 @@ Gem.prototype.collision = function () {
         gem.spawnTime += 250;
         gem.count.push('&#128142;');
         player.speed -= 2;
+        gem.cssUpdate();
     }
     if (heart.x <= gem.x + 30
         && heart.x + 30 >= gem.x
         && heart.y <= gem.y + 50
         && heart.y + 50 >= gem.y
         )
+    //if a gem and a heart appear in the same location, the gem will
+    //immediately move locations
     {
         gem.create();
     }
 }
 
+Gem.prototype.cssUpdate = function () {
+    if (gem.count.length > 0) {
+        var gemCSS = document.getElementById('gem');
+        gemCSS.style.padding = '-1px';
+    }
+}
+
 Gem.prototype.update = function (dt) {
     gem.collision();
-    /*(this.x += this.speed) * dt;
-    if (this.x > 505) {
-        this.x = -500;
-    }*/
 }
 
 Gem.prototype.render = function() {
@@ -224,35 +227,35 @@ Player.prototype.render = function() {
 }
 
 //a function that checks to see if the player and enemy sprites collide
-//if there is a collision:
-//the player returns to the starting coordinates on the canvas,
-//the player life array loses a heart,
-//and the player speed decreases by two due to the loss of life
-//additionally, if the player score is greater or equal to 50,
-//the player loses 50 points and that is written into the browser
-//And if the gem count is greater or equal to one,
-//the player loses a gem to the greedy bugs
-//but the loss of the additional weight makes the player's speed increase by 2
 function checkEnemyCollisions() {
     for (var i = 0; i < allEnemies.length; i++) {
         if (player.x <= allEnemies[i].x + 70
             && player.x + 70 >= allEnemies[i].x
             && player.y <= allEnemies[i].y + 50
             && player.y + 50 >= allEnemies[i].y)
+            //if there is a collision:
+            //the player returns to the starting coordinates on the canvas,
+            //the player life array loses a heart,
+            //and the player speed decreases by two due to the loss of life
         {
                 player.x = 200;
                 player.y = 415;
                 playerLives.splice(-1, 1);
                 player.speed -= 2;
+                //additionally, if the player score is greater or equal to 50,
+                //the player loses 50 points and that is written into the browser
                 if (playerScore >= 50) {
                     playerScore -= 50;
                     scoreEl.textContent = 'Score: ' + playerScore;
                 }
+                //And if the gem count is greater or equal to one,
+                //the player loses a gem to the greedy bugs
+                //but the loss of the additional weight makes the player's speed
+                //increase by 2
                 if (gem.count.length >=1) {
                     gem.count.splice(-1, 1);
                     player.speed += 2;
                 }
-                //reset(); //create reset function
         }
     }
 }
@@ -278,6 +281,8 @@ function playerLife() {
     lifeEl.innerHTML = 'Lives: ' + playerLives.join("");
 }
 
+//this function writes the number of gems to the browser
+//as a string, from the gem.count array
 function playerGem() {
     var gemEl = document.getElementById('gem');
     gemEl.innerHTML = 'Gems: ' + gem.count.join("");
@@ -293,7 +298,6 @@ Player.prototype.update = function(dt) {
     score();
     playerLife();
     playerGem();
-    console.log(gem.count);
 }
 
 /*function gameOver() {
@@ -330,3 +334,7 @@ document.addEventListener('keydown', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+function htmlTweaker () {
+
+}
