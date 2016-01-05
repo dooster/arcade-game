@@ -1,14 +1,6 @@
 /* TODO
--implement gems that give points and time based bonuses
--create a gameover function
-    -resets player location
-    -resets enemy location and speed
-    -resets score
-    -resets lives
-    -takes back to splash screen and character select?
--create a second level area?
+-create a second level area? collect enough gems for underwater level
 -create a splash screen with character select
--collect enough gems to enter additional underwater level
 */
 
 //create global variable level which is used to determine enemy speed
