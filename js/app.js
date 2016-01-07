@@ -8,10 +8,6 @@
 var level = 1;
 var levelEl = document.getElementById('level');
 
-//a global variable of the player's lives, starting at three
-//the lives are displayed in the browser as unicode hearts
-var playerLives = ['&#128156;', '&#128156;', '&#128156;'];
-
 //a global variable displaying the player's score, starting at 0
 var scoreEl = document.getElementById('score');
 
@@ -89,7 +85,7 @@ Heart.prototype.collision = function () {
     //into the player live's array, calls the disappear function
     //and increases player speed
     {
-        playerLives.push('&#128156;');
+        player.lives.push('&#128156;');
         heart.disappear();
         player.speed += 2;
     }
@@ -188,6 +184,7 @@ var Player = function () {
     this.sprite = 'images/char-cat-girl.png';
     this.speed = 30;
     this.score = 0;
+    this.lives = ['&#128156;', '&#128156;', '&#128156;'];
 }
 
 //sets the bounds of the player's movement
@@ -239,12 +236,12 @@ Player.prototype.addScore = function() {
     }
 }
 //this function writes the number of new lives to the browser
-//as a string, from the playerLives array
-//if the playerLives function is empty, it calls the gameOver function
+//as a string, from the player.lives array
+//if the player.lives function is empty, it calls the gameOver function
 Player.prototype.playerLife = function() {
     var lifeEl = document.getElementById('life');
-    lifeEl.innerHTML = 'Lives: ' + playerLives.join("");
-    if (playerLives == false) {
+    lifeEl.innerHTML = 'Lives: ' + player.lives.join("");
+    if (player.lives == false) {
         gameOver();
     }
 }
@@ -284,7 +281,7 @@ function checkEnemyCollisions() {
         {
                 player.x = 200;
                 player.y = 415;
-                playerLives.splice(-1, 1);
+                player.lives.splice(-1, 1);
                 player.speed -= 2;
                 //additionally, if the player score is greater or equal to 50,
                 //the player loses 50 points and that is written into the browser
@@ -318,7 +315,7 @@ function gameOver() {
     level = 1;
     levelEl.textContent = 'Level: ' + level;
     gem.count = [];
-    playerLives = ['&#128156;', '&#128156;', '&#128156;'];
+    player.lives = ['&#128156;', '&#128156;', '&#128156;'];
     player.speed = 24;
     player.score = 0;
     scoreEl.textContent = 'Score: ' + player.score;
