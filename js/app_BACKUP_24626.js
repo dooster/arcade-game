@@ -183,9 +183,15 @@ var Player = function () {
     this.y = 400;
     this.sprite = 'images/char-cat-girl.png';
     this.speed = 30;
+<<<<<<< HEAD
     this.score = 0;
     this.lives = ['&#128156;', '&#128156;', '&#128156;'];
 };
+||||||| merged common ancestors
+}
+=======
+};
+>>>>>>> b269bc9990a8dcd96af3365db4a2f0dbe20ccb89
 
 //sets the bounds of the player's movement
 Player.prototype.playerBounds = function() {
@@ -219,6 +225,7 @@ Player.prototype.handleInput = function(key) {
     if (key == 'down') {
         this.y += this.speed;
     }
+<<<<<<< HEAD
 };
 
 //this function adds 100 to the player's score and writes it to the browser,
@@ -263,7 +270,11 @@ Player.prototype.update = function(dt) {
     player.playerLife();
     player.playerGem();
 };
-
+||||||| merged common ancestors
+}
+=======
+};
+>>>>>>> b269bc9990a8dcd96af3365db4a2f0dbe20ccb89
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -303,6 +314,98 @@ function checkEnemyCollisions() {
     }
 }
 
+<<<<<<< HEAD
+||||||| merged common ancestors
+//this function adds 100 to the player's score and writes it to the browser,
+//increases the level, speeding up the enemy,
+//and returns the player to a starting position
+//if the player's y coordinate is less than 60
+function score() {
+    if (player.y < 60) {
+        player.x = 200;
+        player.y = 400;
+        playerScore += 100;
+        scoreEl.textContent = 'Score: ' + playerScore;
+        level++;
+        levelEl.textContent = 'Level: ' + level;
+    }
+}
+//this function writes the number of new lives to the browser
+//as a string, from the playerLives array
+//if the playerLives function is empty, it calls the gameOver function
+function playerLife() {
+    var lifeEl = document.getElementById('life');
+    lifeEl.innerHTML = 'Lives: ' + playerLives.join("");
+    if (playerLives == false) {
+        gameOver();
+    }
+}
+
+//this function writes the number of gems to the browser
+//as a string, from the gem.count array
+function playerGem() {
+    var gemEl = document.getElementById('gem');
+    gemEl.innerHTML = 'Gems: ' + gem.count.join("");
+}
+
+//The player.update function keeps track of all the functions related
+//to the player. It modifies the player's location,
+//and calls the playerBounds, score, and playerLife functions
+Player.prototype.update = function(dt) {
+    this.x * dt;
+    this.y * dt;
+    playerBounds();
+    score();
+    playerLife();
+    playerGem();
+}
+
+=======
+//this function adds 100 to the player's score and writes it to the browser,
+//increases the level, speeding up the enemy,
+//and returns the player to a starting position
+//if the player's y coordinate is less than 60
+function score() {
+    if (player.y < 60) {
+        player.x = 200;
+        player.y = 400;
+        playerScore += 100;
+        scoreEl.textContent = 'Score: ' + playerScore;
+        level++;
+        levelEl.textContent = 'Level: ' + level;
+    }
+}
+//this function writes the number of new lives to the browser
+//as a string, from the playerLives array
+//if the playerLives function is empty, it calls the gameOver function
+function playerLife() {
+    var lifeEl = document.getElementById('life');
+    lifeEl.innerHTML = 'Lives: ' + playerLives.join("");
+    if (playerLives == false) {
+        gameOver();
+    }
+}
+
+//this function writes the number of gems to the browser
+//as a string, from the gem.count array
+function playerGem() {
+    var gemEl = document.getElementById('gem');
+    gemEl.innerHTML = 'Gems: ' + gem.count.join("");
+}
+
+//The player.update function keeps track of all the functions related
+//to the player. It modifies the player's location,
+//and calls the playerBounds, score, and playerLife functions
+Player.prototype.update = function(dt) {
+    this.x * dt;
+    this.y * dt;
+    playerBounds();
+    score();
+    playerLife();
+    playerGem();
+};
+
+>>>>>>> b269bc9990a8dcd96af3365db4a2f0dbe20ccb89
 //a simple function called when the player runs out of lives
 //that resets all aspects of the game
 function gameOver() {
