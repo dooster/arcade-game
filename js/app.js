@@ -13,14 +13,14 @@ var levelEl = document.getElementById('level');
 var playerLives = ['&#128156;', '&#128156;', '&#128156;'];
 
 //a global variable displaying the player's score, starting at 0
-var playerScore = 0;
 var scoreEl = document.getElementById('score');
 
 var Character = function() {
-    this.render = function () {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    }
-}
+};
+
+Character.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
 
 //a basic enemy object creator function that determines:
 //x && y coordinates based on input parameters
@@ -32,6 +32,8 @@ var Enemy = function(x, y) {
     this.sprite = 'images/enemy-bug.png';
 };
 
+Enemy.prototype = Object.create(Character.prototype);
+
 //function responsible for enemy movement which takes dt as param
 //speed is increased in proportion to level
 //enemy's loop. After disappearing off the right side of the canvas
@@ -42,6 +44,8 @@ Enemy.prototype.update = function(dt) {
         this.x = -110;
     }
 };
+
+//Enemy.prototype.render();
 
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -142,8 +146,8 @@ Gem.prototype.collision = function () {
     //increases the player's gem count by 1
     //and decreases the player's speed by 2 due to their weight.
     {
-        playerScore += 50;
-        scoreEl.textContent = 'Score: ' + playerScore;
+        player.score += 50;
+        scoreEl.textContent = 'Score: ' + player.score;
         gem.disappear();
         gem.spawnTime += 250;
         gem.count.push('&#128142;');
@@ -183,6 +187,7 @@ var Player = function () {
     this.y = 400;
     this.sprite = 'images/char-cat-girl.png';
     this.speed = 30;
+    this.score = 0;
 }
 
 //sets the bounds of the player's movement
@@ -223,12 +228,12 @@ Player.prototype.handleInput = function(key) {
 //increases the level, speeding up the enemy,
 //and returns the player to a starting position
 //if the player's y coordinate is less than 60
-Player.prototype.score = function() {
+Player.prototype.addScore = function() {
     if (player.y < 60) {
         player.x = 200;
         player.y = 400;
-        playerScore += 100;
-        scoreEl.textContent = 'Score: ' + playerScore;
+        player.score += 100;
+        scoreEl.textContent = 'Score: ' + player.score;
         level++;
         levelEl.textContent = 'Level: ' + level;
     }
@@ -256,7 +261,7 @@ Player.prototype.playerGem = function() {
 //and calls the playerBounds, score, and playerLife functions
 Player.prototype.update = function(dt) {
     player.playerBounds();
-    player.score();
+    player.addScore();
     player.playerLife();
     player.playerGem();
 }
@@ -283,9 +288,9 @@ function checkEnemyCollisions() {
                 player.speed -= 2;
                 //additionally, if the player score is greater or equal to 50,
                 //the player loses 50 points and that is written into the browser
-                if (playerScore >= 50) {
-                    playerScore -= 50;
-                    scoreEl.textContent = 'Score: ' + playerScore;
+                if (player.score >= 50) {
+                    player.score -= 50;
+                    scoreEl.textContent = 'Score: ' + player.score;
                 }
                 //And if the gem count is greater or equal to one,
                 //the player loses a gem to the greedy bugs
@@ -315,8 +320,8 @@ function gameOver() {
     gem.count = [];
     playerLives = ['&#128156;', '&#128156;', '&#128156;'];
     player.speed = 24;
-    playerScore = 0;
-    scoreEl.textContent = 'Score: ' + playerScore;
+    player.score = 0;
+    scoreEl.textContent = 'Score: ' + player.score;
 }
 
 //Code from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
