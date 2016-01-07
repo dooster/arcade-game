@@ -35,7 +35,7 @@ Enemy.prototype = Object.create(Character.prototype);
 //enemy's loop. After disappearing off the right side of the canvas
 //they reappear at a -110 x-point
 Enemy.prototype.update = function(dt) {
-    (this.x += this.speed + (level * .3)) * dt;
+    (this.x += this.speed + (level * 0.3)) * dt;
     if (this.x > 505) {
         this.x = -110;
     }
@@ -52,19 +52,19 @@ var Heart = function () {
     this.x = getRandomInt(0, 4) * 101;
     this.y = getRandomInt(1, 4) * 83;
     this.sprite = 'images/heart-purple-small.png';
-}
+};
 
 //creates a location function for the heart with random
 //x && y coordinates in rows 2 to 4 and any column
 Heart.prototype.location = function () {
     this.x = getRandomInt(0, 4) * 101;
     this.y = getRandomInt(1, 4) * 83;
-}
+};
 
 //creates the heart based on the location function
 Heart.prototype.create = function () {
     heart.location();
-}
+};
 
 //the function removes the heart from the board
 //and calls the create function, respawning the heart
@@ -72,15 +72,15 @@ Heart.prototype.create = function () {
 Heart.prototype.disappear = function () {
     heart.x = -100;
     setTimeout(heart.create, 11500);
-}
+};
 
 //Hearts make the player hearty and increase
 //total number of lives and player speed upon contact
 Heart.prototype.collision = function () {
-    if (player.x <= heart.x + 65
-        && player.x + 65 >= heart.x
-        && player.y <= heart.y + 55
-        && player.y + 90 >= heart.y)
+    if (player.x <= heart.x + 65 &&
+        player.x + 65 >= heart.x &&
+        player.y <= heart.y + 55 &&
+        player.y + 90 >= heart.y)
     //contact pushes an extra unicode heart ('&#128154;')
     //into the player live's array, calls the disappear function
     //and increases player speed
@@ -89,15 +89,15 @@ Heart.prototype.collision = function () {
         heart.disappear();
         player.speed += 2;
     }
-}
+};
 
 Heart.prototype.update = function (dt) {
     heart.collision();
-}
+};
 
 Heart.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 //creates a gem object with random initial coordinates
 //it has a spawn time of 7 seconds, which will increase
@@ -109,32 +109,32 @@ var Gem = function () {
     this.sprite = 'images/gem-blue.png';
     this.spawnTime = 7000;
     this.count = [];
-}
+};
 
 //a funcion that randomizes the gem's location
 Gem.prototype.location = function () {
     this.x = (getRandomInt(0, 4) * 101) + 20;
     this.y = (getRandomInt(1, 6) * 83) + 15;
-}
+};
 
 //places the gem randomly on the gameboard
 Gem.prototype.create = function () {
     gem.location();
-}
+};
 
 //when called, hides the gem off screen and
 //creates a gem again, after it's spawnTime
 Gem.prototype.disappear = function () {
     this.x = -100;
     setTimeout(gem.create, gem.spawnTime);
-}
+};
 
 //gems are valuable but extremely big and heavy
 Gem.prototype.collision = function () {
-    if (player.x <= gem.x + 55
-        && player.x + 70 >= gem.x
-        && player.y <= gem.y + 45
-        && player.y + 90 >= gem.y)
+    if (player.x <= gem.x + 55 &&
+        player.x + 70 >= gem.x &&
+        player.y <= gem.y + 45 &&
+        player.y + 90 >= gem.y)
     //on contact, each gem:
     //increases a player's score, which is written onto the browser
     //calls the gem's disappear function
@@ -150,32 +150,32 @@ Gem.prototype.collision = function () {
         player.speed -= 2;
         gem.cssUpdate();
     }
-    if (heart.x <= gem.x + 30
-        && heart.x + 30 >= gem.x
-        && heart.y <= gem.y + 50
-        && heart.y + 50 >= gem.y
+    if (heart.x <= gem.x + 30 &&
+        heart.x + 30 >= gem.x &&
+        heart.y <= gem.y + 50 &&
+        heart.y + 50 >= gem.y
         )
     //if a gem and a heart appear in the same location, the gem will
     //immediately move locations
     {
         gem.create();
     }
-}
+};
 
 Gem.prototype.cssUpdate = function () {
     if (gem.count.length > 0) {
         var gemCSS = document.getElementById('gem');
         gemCSS.style.padding = '-1px';
     }
-}
+};
 
 Gem.prototype.update = function (dt) {
     gem.collision();
-}
+};
 
 Gem.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 //creates the player object, determines starting position, speed, and sprite
 var Player = function () {
@@ -185,7 +185,7 @@ var Player = function () {
     this.speed = 30;
     this.score = 0;
     this.lives = ['&#128156;', '&#128156;', '&#128156;'];
-}
+};
 
 //sets the bounds of the player's movement
 Player.prototype.playerBounds = function() {
@@ -202,7 +202,7 @@ Player.prototype.playerBounds = function() {
     else if(player.y > 400){
         player.y = 400;
     }
-}
+};
 
 //sets the player's movement so that a keypress leads to the
 //movement of the player in that direction based on the player's speed
@@ -219,7 +219,7 @@ Player.prototype.handleInput = function(key) {
     if (key == 'down') {
         this.y += this.speed;
     }
-}
+};
 
 //this function adds 100 to the player's score and writes it to the browser,
 //increases the level, speeding up the enemy,
@@ -234,7 +234,8 @@ Player.prototype.addScore = function() {
         level++;
         levelEl.textContent = 'Level: ' + level;
     }
-}
+};
+
 //this function writes the number of new lives to the browser
 //as a string, from the player.lives array
 //if the player.lives function is empty, it calls the gameOver function
@@ -244,14 +245,14 @@ Player.prototype.playerLife = function() {
     if (player.lives == false) {
         gameOver();
     }
-}
+};
 
 //this function writes the number of gems to the browser
 //as a string, from the gem.count array
 Player.prototype.playerGem = function() {
     var gemEl = document.getElementById('gem');
     gemEl.innerHTML = 'Gems: ' + gem.count.join("");
-}
+};
 
 //The player.update function keeps track of all the functions related
 //to the player. It modifies the player's location,
@@ -261,19 +262,19 @@ Player.prototype.update = function(dt) {
     player.addScore();
     player.playerLife();
     player.playerGem();
-}
+};
 
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 //a function that checks to see if the player and enemy sprites collide
 function checkEnemyCollisions() {
     for (var i = 0; i < allEnemies.length; i++) {
-        if (player.x <= allEnemies[i].x + 70
-            && player.x + 70 >= allEnemies[i].x
-            && player.y <= allEnemies[i].y + 50
-            && player.y + 50 >= allEnemies[i].y)
+        if (player.x <= allEnemies[i].x + 70 &&
+            player.x + 70 >= allEnemies[i].x &&
+            player.y <= allEnemies[i].y + 50 &&
+            player.y + 50 >= allEnemies[i].y)
             //if there is a collision:
             //the player returns to the starting coordinates on the canvas,
             //the player life array loses a heart,
