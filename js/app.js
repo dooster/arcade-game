@@ -1,6 +1,7 @@
 /* TODO
 -create a second level area? collect enough gems for underwater level
 -create a splash screen with character select
+-add gameover screen that writes score to screen
 */
 
 //create global variable level which is used to determine enemy speed
@@ -41,11 +42,11 @@ Enemy.prototype.update = function(dt) {
     }
 };
 
-//Enemy.prototype.render();
+Enemy.prototype.render();
 
-Enemy.prototype.render = function() {
+/*Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+};*/
 
 //creates a heart object at initial randomized rows from 2 to 4
 var Heart = function () {

@@ -97,6 +97,7 @@ var Engine = (function(global) {
         player.update();
         heart.update();
         gem.update();
+        character.update();
     }
 
     /* This function initially draws the "game level", it will then call
