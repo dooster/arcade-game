@@ -15,6 +15,8 @@ var scoreEl = document.getElementById('score');
 var Character = function() {
 };
 
+//assign the render method, which will be used by all following
+//objects through inheritance
 Character.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
@@ -29,6 +31,7 @@ var Enemy = function(x, y) {
     this.sprite = 'images/enemy-bug.png';
 };
 
+//make Enemy.prototype delegate failed lookup to Character.prototype
 Enemy.prototype = Object.create(Character.prototype);
 
 //function responsible for enemy movement which takes dt as param
@@ -42,18 +45,14 @@ Enemy.prototype.update = function(dt) {
     }
 };
 
-Enemy.prototype.render();
-
-/*Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};*/
-
 //creates a heart object at initial randomized rows from 2 to 4
 var Heart = function () {
     this.x = getRandomInt(0, 4) * 101;
     this.y = getRandomInt(1, 4) * 83;
     this.sprite = 'images/heart-purple-small.png';
 };
+
+Heart.prototype = Object.create(Character.prototype);
 
 //creates a location function for the heart with random
 //x && y coordinates in rows 2 to 4 and any column
@@ -96,10 +95,6 @@ Heart.prototype.update = function (dt) {
     heart.collision();
 };
 
-Heart.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
 //creates a gem object with random initial coordinates
 //it has a spawn time of 7 seconds, which will increase
 //and a counter, which starts at zero but can increase and decrease
@@ -111,6 +106,8 @@ var Gem = function () {
     this.spawnTime = 7000;
     this.count = [];
 };
+
+Gem.prototype = Object.create(Character.prototype);
 
 //a funcion that randomizes the gem's location
 Gem.prototype.location = function () {
@@ -174,10 +171,6 @@ Gem.prototype.update = function (dt) {
     gem.collision();
 };
 
-Gem.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
 //creates the player object, determines starting position, speed, and sprite
 var Player = function () {
     this.x = 200;
@@ -187,6 +180,8 @@ var Player = function () {
     this.score = 0;
     this.lives = ['&#128156;', '&#128156;', '&#128156;'];
 };
+
+Player.prototype = Object.create(Character.prototype);
 
 //sets the bounds of the player's movement
 Player.prototype.playerBounds = function() {
@@ -263,11 +258,6 @@ Player.prototype.update = function(dt) {
     player.addScore();
     player.playerLife();
     player.playerGem();
-};
-
-
-Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 //a function that checks to see if the player and enemy sprites collide
